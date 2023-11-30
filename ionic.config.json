@@ -1,0 +1,7 @@
+{
+  "name": "Todos Justos",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
