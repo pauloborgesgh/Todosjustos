@@ -1,20 +1,69 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
+
+
+<ion-header collapse="condense">
+   
 </ion-header>
+<ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+</ion-header>
+<div class="top"> <p> <img src="assets/icon/images-preview.png"></p></div>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+
+<ion-content class="center" style="text-align: center; padding: 5%">
+  
+  
+  <div class="displayTable">
+    <div class="displayTableCell">
+      <div class="authBlock">
+        <h4>Sign In</h4>
+        <div class="formGroup">
+          <input
+            type="text"
+            class="formControl"
+            placeholder="Username"
+            #userName
+            required
+            label-placement="floating" fill="outline"
+          />
+        
+        <br><br>
+        
+        <input
+
+        name="password"
+        id="password"
+        [type]="mostrarSenha ? 'text' : 'password'"
+        class="formControl"
+        placeholder="Password"
+        value="userPassword"
+        #userPassword
+        required/> 
+        </div>
+      </div>
+      
+    </div>
   </div>
+  <br>
+  <ion-icon name="eye-off-outline" (click)="alternarVisibilidadeSenha()" class="icon"></ion-icon>
+  <br> <br>
+  <!-- <ion-button color="danger" style="height: 2%; width: 220px;">Fazer Login Com Google</ion-button> -->
+  <ion-button
+  type="button"
+  class="button"
+  value="Log in"
+  (click)="login_accept(userName.value, userPassword.value)">Entrar</ion-button>
+  
+
+   <br>
+<ion-footer class="teste">
+  <span > Não tem uma Conta? Inscreva-se<span
+    class="redirect"
+    (click)="function_Cadastro()">Sign Up</span></span>
+
+</ion-footer>
 </ion-content>
+
+
+
+
+

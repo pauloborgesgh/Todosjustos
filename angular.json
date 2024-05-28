@@ -12,7 +12,9 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "options": {
+          "options": {"allowedCommonJsDependencies": [
+            "rxjs@7.8.1"
+          ],
             "outputPath": "www",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -136,7 +138,8 @@
   "cli": {
     "schematicCollections": [
       "@ionic/angular-toolkit"
-    ]
+    ],
+    "analytics": false
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {

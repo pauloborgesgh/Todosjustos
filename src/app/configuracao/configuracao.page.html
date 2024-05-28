@@ -1,0 +1,77 @@
+
+<ion-header>
+  <ion-toolbar class="toolbar">
+  <ion-avatar aria-hidden="true" slot="start"  style="margin: 2px 2px 2px; margin-left: 5px; margin-top: 5px;" >
+    <ion-img [src]="fotoservice.fotoPerfil[0].webviewPath || 'assets/default-avatar.jpg'"></ion-img>
+  </ion-avatar>
+  
+  <i><ion-label ><h3>Paulo Zambon</h3></ion-label></i>
+  
+</ion-toolbar>
+</ion-header>
+
+
+
+    
+<div class="div-context">
+
+    <h3> Dado do Usuario</h3>
+    
+    <ion-input  [(ngModel)]="userData.email"label="Email" label-placement="floating" fill="outline" placeholder="Enter text" Email="Entre com Email Valido"
+  errorText="Email Invalido" ngModel
+  email></ion-input>
+
+<br>
+
+    <ion-input  [(ngModel)]="userData.cpf" type="number" label="Cpf" label-placement="floating" fill="outline" placeholder="Enter text"></ion-input>
+
+
+    <br>
+    <ion-input  [(ngModel)]="userData.cidade"label="Cidade" label-placement="floating" fill="outline" placeholder="Enter text"></ion-input>
+
+    <br>
+
+    <ion-input  [(ngModel)]="userData.bairro"label="Bairro" label-placement="floating" fill="outline" placeholder="Enter text"></ion-input>
+
+
+    <br>
+    <ion-input   [(ngModel)]="userData.numero" type="number" label=" Numero" label-placement="floating" fill="outline" placeholder="Enter text"></ion-input>
+
+
+  <br>
+  <div class="button">
+    <ion-button (click)="showLoading()">Salvar Dados</ion-button>
+    
+  </div>
+
+</div>
+   
+        <br>
+         
+   
+  <ion-footer class="footer">
+    
+    <ion-grid>
+      <ion-row>
+        <ion-col><ion-tab-button tab="home">
+           <ion-icon name="arrow-undo-circle-outline" (click)="functioMenu()"></ion-icon>
+        Voltar
+        </ion-tab-button></ion-col>
+
+        <!-- <ion-col>
+          <ion-tab-button tab="list-outline">
+          <ion-icon name="home-outline" routerLink="['/menu']"></ion-icon>Home</ion-tab-button>
+        </ion-col> -->
+
+        <ion-col>
+          <ion-tab-button tab="Sair" >
+          <ion-icon name="exit-outline" (click)="AlertaSair()"></ion-icon>Sair</ion-tab-button>
+        </ion-col>
+        </ion-row>
+      </ion-grid>
+    
+    
+
+</ion-footer>
+
+

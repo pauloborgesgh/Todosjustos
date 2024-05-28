@@ -1,0 +1,104 @@
+<ion-content [fullscreen]="true" class="container">
+  <ion-header>
+    <ion-toolbar class="toolbar">
+      <ion-avatar aria-hidden="true" slot="start" style="margin: 2px 2px 2px; margin-left: 5px; margin-top: 5px;"
+        (click)="tirarFoto()"> 
+        <ion-img [src]="fotoservice.fotoPerfil[0].webviewPath || 'assets/default-avatar.jpg'"></ion-img>
+        
+      </ion-avatar>
+      <i><ion-label>
+          <h3>Paulo Zambon</h3>
+        </ion-label></i>
+    </ion-toolbar>
+  </ion-header>
+  <br>
+
+  <h1>Menu</h1>
+  
+  <div>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-tab-button tab="home">
+            <ion-icon name="warning-outline" (click)="presentAlertAdd()"></ion-icon>
+            Fazer Denuncia
+          </ion-tab-button>
+        </ion-col>
+        <ion-col>
+          <ion-tab-button tab="list-outline">
+            <ion-icon name="reader-outline"  [routerLink]="['/lista']"></ion-icon>
+            
+           Area Cadastro</ion-tab-button>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-tab-button tab="Informações">
+            <ion-icon name="information-circle" [routerLink]="['/info']"></ion-icon>Informações</ion-tab-button>
+        </ion-col>
+        <ion-col>
+          <ion-tab-button tab="exit-outline">
+            <ion-icon name="newspaper-outline" [routerLink]="['/fazerdenuncia']"></ion-icon>Noticias</ion-tab-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+
+    <br>
+
+    <ion-grid>
+      <ion-row>
+
+
+        <ion-col>
+          <ion-tab-button tab="exit-outline">
+            <ion-icon name="accessibility-outline" [routerLink]="['/prevencao']"></ion-icon>Prevenções</ion-tab-button>
+        </ion-col>
+
+        <ion-col>
+          <ion-tab-button tab="exit-outline">
+            <ion-icon name="settings-outline" [routerLink]="['/configuracao']"></ion-icon>
+            Configuração</ion-tab-button>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+
+
+
+  </div>
+
+  <!-- começo do footer -->
+</ion-content>
+<ion-footer class="footer">
+
+  <ion-grid>
+    <ion-row>
+      <ion-col><ion-tab-button tab="home">
+          
+          <ion-icon name="search-outline"></ion-icon>
+          Buscar
+
+        </ion-tab-button></ion-col>
+
+      <ion-col>
+        <ion-tab-button tab="list-outline">
+          <ion-icon name="home-outline" [[routerLink]="['/home']"></ion-icon>Home</ion-tab-button>
+      </ion-col>
+
+      <ion-col>
+        <ion-tab-button tab="Sair">
+          <ion-icon name="exit-outline" (click)="showSair()"></ion-icon>Sair</ion-tab-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+
+</ion-footer>

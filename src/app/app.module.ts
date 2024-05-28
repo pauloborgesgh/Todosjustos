@@ -1,16 +1,25 @@
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
-
+import { RouteReuseStrategy, RouterLink} from '@angular/router';
+import { UserService } from './user.service';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-
+import { SqliteService } from './sqlite.service';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { TaskService } from './task.service';
+import { FotoService } from './foto.service';
+import { AllComponentesUsadoComponent } from './all-componentes-usado/all-componentes-usado.component';
+import { Storage } from '@ionic/storage';
+import { RouterLinkWithHref } from '@angular/router';
+
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  declarations: [AppComponent,AllComponentesUsadoComponent],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,RouterLink,RouterLinkWithHref],
+ 
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    UserService,FotoService,TaskService,SqliteService,AllComponentesUsadoComponent,Storage],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

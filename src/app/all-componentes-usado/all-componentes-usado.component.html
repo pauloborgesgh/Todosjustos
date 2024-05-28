@@ -1,0 +1,42 @@
+
+
+<ion-header  >
+  <ion-toolbar class="toolbar">
+    <ion-avatar aria-hidden="true" slot="start"  style="margin: 2px 2px 2px; margin-left: 5px; margin-top: 5px;"  (click)="tirarFoto()">
+      <ion-img [src]="fotoservice.fotoPerfil[0].webviewPath || 'assets/default-avatar.jpg'"></ion-img>
+    </ion-avatar>
+    <i><ion-label ><h3>Paulo Zambon</h3></ion-label></i>
+  </ion-toolbar>
+</ion-header>
+
+
+
+
+   <ion-tabs color="primary">
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="home">
+        <ion-icon name="megaphone-outline"></ion-icon>
+        Cadastrar Denuncia
+      </ion-tab-button>
+      <ion-tab-button tab="list-outline">
+        <ion-icon name="list-outline"></ion-icon>
+        Lista
+      </ion-tab-button>
+      <ion-tab-button tab="Informações">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        Informações
+      </ion-tab-button>
+      <ion-tab-button tab="exit-outline">
+        <ion-icon name="exit-outline"></ion-icon>
+        Sair
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+
+
+<!-- Adicione o restante do conteúdo do componente aqui -->
+<!-- Por exemplo, adicione ion-content, ion-buttons, etc. -->
+
+
+
+
