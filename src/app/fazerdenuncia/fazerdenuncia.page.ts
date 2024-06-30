@@ -7,6 +7,7 @@ import { ActionSheetController } from '@ionic/angular';
 import { Foto, FotoService } from '../foto.service';
 import { TaskService } from '../task.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { ApiService } from '../service/api.service';
 
 
 
@@ -27,6 +28,7 @@ export class FazerdenunciaPage {
 
 
    constructor(
+    public api:ApiService,
     public actionsheetController :ActionSheetController,
     public navCtrl:NavController,
     public plataform:Platform ,
@@ -39,8 +41,22 @@ export class FazerdenunciaPage {
 
   
     ) {
-      
+      this['getDenuncia']();
      }
+     getDenuncia(){
+      this.api['getDenuncia']().subscribe((api: any) => {
+        console.log(api);
+        
+      })
+     }
+    //  postData() {
+      
+    //   this.api.postData().subscribe(response => {
+    //     console.log('Resposta do servidor:', response);
+    //   }, error => {
+    //     console.error('Erro na requisição:', error);
+    //   });
+    // }
 
 
   functionVoltar(){
@@ -58,73 +74,93 @@ export class FazerdenunciaPage {
 
 
   
+  
   async presentAlertAdd() {
     const alert = await this.alertController.create({
-      header: 'Fazer Denuncia',
-      inputs:[
+      header: 'Fazer Denúncia',
+      inputs: [
         {
           name: 'rua',
           type: 'text',
-          placeholder:'Rua'
-
+          placeholder: 'Rua'
         },
         {
-          name:'bairro',
+          name: 'bairro',
+          type: 'text',
           placeholder: 'Bairro',
           attributes: {
-            maxlength: 20,
-          },
+            maxlength: 20
+          }
         },
         {
-          name:'numero',
+          name: 'numero',
           type: 'number',
-          placeholder: 'Numero',
+          placeholder: 'Número',
           min: 1,
-          max: 100,
+          max: 100
         },
         {
-          name:'obs',
+          name: 'date',
+          type: 'date',
+          min: '2023-01-01',
+          max: '2024-12-30'
+        },
+        {
+          name: 'obs',
           type: 'textarea',
-          placeholder: 'Observação',
-        },
-        {
-          name:'date',
-          type:'date',
-          min: '2023-01-01', 
-          max:'2024-12-30'
-        },
+          placeholder: 'Observação'
+        }
       ],
       subHeader: 'Envio de Dados',
-      //message: 'This is an alert!',
-      buttons:[
-       
-          {
-            text: 'cancelar',
-            role: 'cancel',
-            cssClass: 'secondary',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary'
+        },
+        {
+          text: 'OK',
+          handler: (data) => {
+            if (
+              data.rua !== "" &&
+              data.bairro !== "" &&
+              data.numero !== "" &&
+              data.date !== "" &&
+              data.obs !== ""
+            ) {
+              const taskData = {
+                rua: data.rua,
+                address: data.bairro,
+                numero: data.numero,
+                date: data.date,
+                obs: data.obs,
+                done: false // Este campo pode ser opcional dependendo da sua API
+              };
 
-          },{
-            text:'OK',
-            handler:(alert) =>{
-             if (alert.task != " " ,alert.rua !="",alert.bairro!="",alert.numero!="",alert.obs != " ",alert.date!= "")
-              this.taskService.denunciaIndex(alert.rua,alert.bairro,alert.numero,alert.obs,alert.date),
-              this.functioncNextLista();
-             
-             else{
-              //this.taskService.addDenuncia(alert.rua,alert.bairro,alert.numero,alert.obs,alert.date);
-              this.Campo_Vazio();
-            
-             }
-             
+              this.taskService['postData'](taskData).subscribe(
+                (                response: any) => {
+                  console.log('Dados enviados com sucesso:', response);
+                  this.functioncNextLista(); // Chame sua função para prosseguir
+                },
+                (                error: any) => {
+                  console.error('Erro ao enviar os dados:', error);
+                  this['presentToastError'](); // Exibe um toast para o erro
+                }
+              );
+            } else {
+              this.presentToastVazio(); // Exibe um toast para campos vazios
             }
           }
-      ],
+        }
+      ]
     });
-    
 
     await alert.present();
   }
+
   
+
+
   
     async presentToastVazio(){
       const toast = await this.toastontroller.create({

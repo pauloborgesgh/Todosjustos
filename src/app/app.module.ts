@@ -12,11 +12,13 @@ import { FotoService } from './foto.service';
 import { AllComponentesUsadoComponent } from './all-componentes-usado/all-componentes-usado.component';
 import { Storage } from '@ionic/storage';
 import { RouterLinkWithHref } from '@angular/router';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+
 
 
 @NgModule({
   declarations: [AppComponent,AllComponentesUsadoComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,RouterLink,RouterLinkWithHref],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,RouterLink,RouterLinkWithHref,HttpClientModule],
  
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     UserService,FotoService,TaskService,SqliteService,AllComponentesUsadoComponent,Storage],

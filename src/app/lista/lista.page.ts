@@ -8,6 +8,8 @@ import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { Foto, FotoService } from '../foto.service';
 import { Camera, CameraResultType, CameraSource} from '@capacitor/camera';
 import { RouterLink } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { ApiService } from '../service/api.service';
 
 
 defineCustomElements(window);
@@ -24,7 +26,7 @@ export class ListaPage  {
   public tasks!: Observable<any[]>;
 
  
-
+  data: any[] = [];
   
   constructor(public navCtrl : NavController,
      public taskService:TaskService,
@@ -34,17 +36,32 @@ export class ListaPage  {
      public actionsheetController: ActionSheetController,
      public loadingCtrl: LoadingController,
      public toastontroller:ToastController,
+     public api:ApiService,
+     public http: HttpClient,
      
      
      ) {
+       this.getData();
+      
    
     
+  
   }
   
-
-  ngOnInit(){
-   
+  getData() {
+    this.api.getData().subscribe(
+      (      body: any) => {
+        
+      console.log(body);
+      this.data = body
+    }, (error: any) => {
+      console.error('Erro ao obter dados', error);
+    });
   }
+
+  // ngOnInit(): void {
+    
+  // }
   Voltarhome() {
     this.navCtrl.navigateBack('home')
   }

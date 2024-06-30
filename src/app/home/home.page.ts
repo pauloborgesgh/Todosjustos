@@ -4,10 +4,14 @@ import { AlertController, NavController } from '@ionic/angular';
 
 import { User, UserService } from '../user.service';
 import { LoadingController } from '@ionic/angular';
+
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
+
+
 })
 export class HomePage {
  [ x: string]: any;
@@ -18,6 +22,8 @@ export class HomePage {
     public router: Router,
     public userService: UserService,
     public loadingCtrl: LoadingController,
+
+    
  
     ) {
     // this.authenticationService.logged().subscribe(
@@ -26,9 +32,16 @@ export class HomePage {
     //   },
     //   (      erro: any) => console.log(erro)
     // ) 
-     
+    // this['getData']();
   
     }
+
+    // getData(){
+    //   this.api.getData().subscribe(api => {
+    //     console.log(api);
+        
+    //   })};
+    
     public alternarVisibilidadeSenha(): void {
       this.mostrarSenha = !this.mostrarSenha;
     }
@@ -64,16 +77,16 @@ export class HomePage {
     await alert.present();
   }
 
-  // async LoginAlerta() {
-  //   const alert = await this['alertController'].create({
-  //     header: 'Login Com Sucesso',
-  //     //message: 'Verifique os campos',
+  async LoginAlerta() {
+    const alert = await this['alertController'].create({
+      header: 'Login Com Sucesso',
+      //message: 'Verifique os campos',
 
-  //     buttons: ['OK']
-  //   });
+      buttons: ['OK']
+    });
 
-  //   await alert.present();
-  // }
+    await alert.present();
+  }
   async showLoading() {
     const loading = await this['loadingCtrl'].create({
       message: 'Conectando..',

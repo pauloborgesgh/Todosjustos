@@ -1,6 +1,7 @@
 
 
 import { Component } from '@angular/core';
+import { ApiService } from './service/api.service';
 
 
 @Component({
@@ -9,11 +10,23 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-
-  constructor(
+  [x: string]: any;
+  data: any[] = [];
+  constructor(private apiService: ApiService
   
   ) {
    
+  }
+  getData() {
+    this.apiService.getData().subscribe(
+      (respostaok: any) => {
+        console.log(respostaok);
+        this['data'] = respostaok;
+      },
+      (error: any) => {
+        console.error('Erro ao obter dados', error);
+      }
+    );
   }
 
 }

@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { LoadingController } from '@ionic/angular/providers/loading-controller';
 import { HttpClient } from '@angular/common/http';
-
+import { ApiService } from './service/api.service';
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
   [x: string]: any;
-  public apiUrl = 'http://localhost:3000/api/denuncias';
+  // public apiUrl = 'http://localhost:3000/api/denuncias';
   public tasks : Task[] = [];
   
   public collectionName : string = 'Task';
@@ -25,21 +25,23 @@ export class TaskService {
     localStorage.setItem('tasks', JSON.stringify(this.tasks));
   }
 
-  public denunciaIndex(rua:string,address:string,numero:string,obs:string,date:string,){
+  public denunciaIndex(rua:string,bairro:string,numero:string,obs:string,date:string,){
     let task : Task;
     if(date != ''){
       date = date.replace(" -" ,"/");
-      task = {rua:rua,address:address,numero:numero,obs:obs,date: new Date(date),done:false,};
+      task = {rua:rua,bairro:bairro,numero:numero,obs:obs,date: new Date(date)};
     }else
-    task = {rua:rua,address:address,numero:numero,obs:obs,date: new Date(date),done:false,};
+    task = {rua:rua,bairro:bairro,numero:numero,obs:obs,date: new Date(date)};
     this.tasks.push(task);
-    this.saveTasksToLocalStorage();
+    this.saveTasksToLocalStorage(); 
+    
+    
   }
 
-  public atualizarDenuncia(index: number, rua:string,address:string,numero:string,obs:string,date:string){
+  public atualizarDenuncia(index: number, rua:string,bairro:string,numero:string,obs:string,date:string){
     let task:Task = this.tasks[index];
     task.rua = rua;
-    task.address = address;
+    task.bairro = bairro;
     task.numero =  numero;
     task.obs = obs;
     date = date.replace(" -" ,"/");
@@ -47,6 +49,7 @@ export class TaskService {
     this.tasks.splice(index);
     this.tasks.push(task);
     this.saveTasksToLocalStorage();
+    
   }
   
   public async deletarDenuncia(index: number){
@@ -65,10 +68,9 @@ export class TaskService {
 
 export interface Task{
   rua: string;
-  address:string;
+  bairro:string;
   numero: string;
   obs:string;
-  done?: boolean;
   date:Date;
   
 }  
