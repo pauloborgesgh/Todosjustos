@@ -21,13 +21,9 @@ defineCustomElements(window);
 export class ListaPage  {
 [x: string]: any;
 
-// public fotos : Foto[] = [];
-
-  public tasks!: Observable<any[]>;
-
  
   data: any[] = [];
-  
+  denuncias: any[] = [];
   constructor(public navCtrl : NavController,
      public taskService:TaskService,
      public fotoService:FotoService,
@@ -42,10 +38,6 @@ export class ListaPage  {
      
      ) {
        this.getData();
-      
-   
-    
-  
   }
   
   getData() {
@@ -59,9 +51,8 @@ export class ListaPage  {
     });
   }
 
-  // ngOnInit(): void {
-    
-  // }
+
+ 
   Voltarhome() {
     this.navCtrl.navigateBack('home')
   }
@@ -69,86 +60,271 @@ export class ListaPage  {
     const loading = await this.loadingCtrl.create({
       message: 'Aguarde ...',
       duration: 3000,
-    });
+      
+    }
+    );
 
     loading.present();
     await new Promise(resolve => setTimeout(resolve, 1000)); 
   }
-  async presentAlertAdd() {
-    const alert = await this['alertController'].create({
-      header: 'Fazer Denuncia',
-      inputs:[
+  async CadastroDenuncia() {
+    const alert = await this.alertController.create({
+      header: 'Fazer Denúncia',
+      inputs: [
         {
           name: 'rua',
           type: 'text',
-          placeholder:'Rua'
-
+          placeholder: 'Rua'
         },
         {
-          name:'address',
+          name: 'bairro',
+          type: 'text',
           placeholder: 'Bairro',
           attributes: {
-            maxlength: 20,
-          },
+            maxlength: 20
+          }
         },
         {
-          name:'numero',
+          name: 'cidade',
+          type: 'text',
+          placeholder: 'Cidade',
+          attributes: {
+            maxlength: 20
+          }
+        },
+        {
+          name: 'numero',
           type: 'number',
-          placeholder: 'Numero',
-          min: 1,
-          max: 100,
+          placeholder: 'Número',
+        
         },
         {
-          name:'obs',
+          name: 'Dia',
+          type: 'date',
+          min: '2023-01-01',
+          max: '2024-12-30'
+        },
+        {
+          name: 'obs',
           type: 'textarea',
-          placeholder: 'Observação',
-        },
-        {
-          name:'date',
-          type:'date',
-          min: '2023-01-01', 
-          max:'2024-12-30'
-        },
-      
-        
-        
-        
+          placeholder: 'Observação'
+        }
       ],
       subHeader: 'Envio de Dados',
-      //message: 'This is an alert!',
-      buttons:[
-          {
-            text: 'cancelar',
-            role: 'cancel',
-            cssClass: 'secondary',
-
-          },{
-            text:'OK',
-            
-            handler:async (alert: { task: string; rua: string; address: string; numero: string; obs: string; date: string; }) =>{
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary'
+        },
+        {
+          text: 'OK',
+          handler: (denuncia) => {
+            this.api.postData(denuncia).subscribe(response => {
+              this.loadCadastro();
+              console.log('Denúncia adicionada', response);
               
-              if (alert.task !==" ")
-              this.loadingAdd(),
-              await new Promise(resolve => setTimeout(resolve, 3000)),
-              
-              this.taskService.denunciaIndex(alert.rua,alert.address,alert.numero,alert.obs,alert.date);
-             
-             
-             else{
-                this.presentToast();
-                this.presentAlertAdd();
-             
-              
-             }
-            }
-
+            }, error => {
+              console.error('Erro ao adicionar denúncia', error);
+            });
           }
-
-      ],//['Enviar'],
+        }
+      ]
     });
 
     await alert.present();
   }
+
+
+  async EditaDenuncia(denuncia: any) {
+    try {
+      const alert = await this.alertController.create({
+        header: 'Editar Denúncia',
+        inputs: [
+          {
+            name: 'rua',
+            type: 'text',
+            placeholder: 'Rua',
+            value: denuncia.rua,
+          },
+          {
+            name: 'bairro',
+            type: 'text',
+            placeholder: 'Bairro',
+            value: denuncia.bairro,
+            attributes: {
+              maxlength: 20,
+            },
+          },
+          {
+            name: 'cidade',
+            type: 'text',
+            placeholder: 'Cidade',
+            value: denuncia.cidade,
+            attributes: {
+              maxlength: 20,
+            },
+          },
+          {
+            name: 'numero',
+            type: 'number',
+            placeholder: 'Número',
+            value: denuncia.numero,
+          },
+          {
+            name: 'date',
+            type: 'date',
+            value: denuncia.Dia,
+            min: '2023-01-01',
+            max: '2024-12-30',
+          },
+          {
+            name: 'obs',
+            type: 'textarea',
+            placeholder: 'Observação',
+            value: denuncia.obs,
+          },
+        ],
+        subHeader: 'Atualizar Dados',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            cssClass: 'secondary',
+          },
+          {
+            text: 'OK',
+            handler: (data) => {
+              const updatedDenuncia = {
+                id: denuncia.id, // Ensure the ID is included
+                rua: data.rua,
+                bairro: data.bairro,
+                cidade: data.cidade,
+                numero: parseInt(data.numero, 10), // Garantir que seja número
+                Dia: data.date, // Converter string para Date
+                obs: data.obs,
+              };
+              this.updateDenuncia(updatedDenuncia);
+            },
+          },
+        ],
+      });
+      await alert.present();
+    } catch (error) {
+      console.error('Erro ao carregar denúncia', error);
+    }
+  }
+  
+  // async presentAlertEdit(id: string) {
+  //   const alert = await this.alertController.create({
+  //     header: 'Editar Denúncia',
+  //     inputs: [
+  //       {
+  //         name: 'rua',
+  //         type: 'text',
+  //         placeholder: 'Rua',
+  //         value:id
+  //       },
+  //       {
+  //         name: 'bairro',
+  //         type: 'text',
+  //         placeholder: 'Bairro',
+  //         attributes: {
+  //           maxlength: 20
+  //         }
+          
+  //       },
+  //       {
+  //         name: 'cidade',
+  //         type: 'text',
+  //         placeholder: 'Cidade',
+  //         attributes: {
+  //           maxlength: 20
+  //         }
+  //       },
+  //       {
+  //         name: 'numero',
+  //         type: 'number',
+  //         placeholder: 'Número',
+  //         min: 1,
+  //         max: 100
+  //       },
+  //       {
+  //         name: 'date',
+  //         type: 'date',
+  //         min: '2023-01-01',
+  //         max: '2024-12-30'
+  //       },
+  //       {
+  //         name: 'obs',
+  //         type: 'textarea',
+  //         placeholder: 'Observação'
+  //       }
+  //     ],
+  //     subHeader: 'Atualizar Dados',
+  //     buttons: [
+  //       {
+  //         text: 'Cancelar',
+  //         role: 'cancel',
+  //         cssClass: 'secondary'
+  //       },
+  //       {
+  //         text: 'OK',
+  //         handler: (data) => {
+  //           this.api.putData(id, data).subscribe((response: any) => {
+  //             this.updateDenuncia(data);
+  //             console.log('Denúncia atualizada', response);
+              
+  //           }, (error: any) => {
+  //             console.error('Erro ao atualizar denúncia', error);
+  //           });
+  //         }
+  //       }
+  //     ]
+  //   });
+
+  //   await alert.present();
+  // }
+
+  // updateDenuncia(denuncia:any) {
+  //   this.api.updateData(denuncia).subscribe((response: any) => {
+  //     this.loadingAtualizando();
+  //     this.getData();
+  //     console.log('Denúncia Atualizada com Sucesso', response);
+  //     // Adicione qualquer lógica adicional após excluir a denúncia
+  //   }, (error: any) => {
+  //     console.error('Erro ao atualizar denúncia', error);
+  //   });
+  // }
+  updateDenuncia(denuncia: any) {
+    this.api.updateData(denuncia.id, denuncia).subscribe(
+      (response: any) => {
+        this.loadingAtualizando();
+        this.getData();
+        console.log('Denúncia Atualizada com Sucesso', response);
+        // Adicione qualquer lógica adicional após atualizar a denúncia
+      },
+      (error: any) => {
+        console.error('Erro ao atualizar denúncia', error);
+      }
+    );
+  }
+
+DeleteDenuncia(id:string) {
+  this.api.deleteData(id).subscribe(
+    (response: any) => {
+      this.loadingExcluir();
+      console.log('Denúncia excluída', response);
+      this.getData();
+    },
+    (error: any) => {
+      console.error('Erro ao excluir denúncia', error);
+    }
+  );
+}
+
+
+  
 
 
   
@@ -163,10 +339,11 @@ export class ListaPage  {
     async loadingExcluir() {
       const loading = await this['loadingCtrl'].create({
         message: 'Excluindo ...',
-        duration: 3200,
+        duration: 2200,
       });
   
       loading.present();
+      this.getData();
      
       
     }
@@ -285,17 +462,19 @@ export class ListaPage  {
 
     
 
-  async presentActionSheet(i: number, denunciaIndex: any) {
+  async ActionExcluir() {
   const actionSheet = await this.actionsheetController.create({
-    header: 'Deseja Excluir esta foto',
+    header: 'Deseja Excluir esta Denuncia',
     buttons: [
       {
         text: 'Deletar',
         icon: 'trash',
-        handler: async () => {await new Promise(resolve => setTimeout(resolve, 3200)),
-          this.loadingExcluir(),
-          this.fotoService.deleteFoto(i,denunciaIndex);
-        },
+        handler: async () => {await new Promise(resolve => setTimeout(resolve, 2200)),
+        
+        this.getData();
+          
+        }
+
       },
       {
         text: 'Cancel',
@@ -306,6 +485,7 @@ export class ListaPage  {
   });
 
   await actionSheet.present();
+  
 }
 
 async showSair() {
@@ -327,6 +507,21 @@ functionhome() {
     
   this.navCtrl.navigateForward('home')
 }
+async loadCadastro() {
+  const loading = await this.loadingCtrl.create({
+    message: 'Cadastrando..',
+    duration: 900,  // Defina o tempo desejado em milissegundos
+  });
+
+  loading.present();
+
+  // Aguarde o tempo definido antes de chamar this.functionhome()
+  await new Promise(resolve => setTimeout(resolve, 1000));  // Aguarda 1 segundo
+  this.getData();
+  
+  
+}
+
 
 }
 

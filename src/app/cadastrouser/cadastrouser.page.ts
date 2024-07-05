@@ -35,6 +35,7 @@ export class CadastrouserPage implements OnInit {
     ) { }
 
   ngOnInit() {
+    this.presentAlertAdd();
   }
   function_Voltar(){
     this.navCtrl.navigateBack('home')

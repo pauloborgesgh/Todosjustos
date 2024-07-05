@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
+[x: string]: any;
 
 
   
@@ -44,7 +45,7 @@ export class UserService {
   public functionSair(){
     this.navCtrl.navigateBack('home')
   }
-
+  
   public addUsuario(nome :string ,email: string, cpf:number ,senha: string, repetir_senha: string) {
     let user: User;
 
@@ -83,33 +84,11 @@ export class UserService {
 
     await alert.present();
   }
+  getEmailAtual(): string {
+    return this['emailAtual'];
+  }
 }
 
-
-
-// async AlertaSair() {
-//   const alert = await this['alertController'].create({
-//     // header: 'Excluir denuncia',
-//     message:'Deseja Realmente Sair',
-
-//     buttons:[
-//         {
-//           text: 'cancelar',
-//           role: 'cancel',
-        
-
-//         },{
-//           text:'Sair',
-//           handler:() => this.AlertaSair(),
-           
-//         }
-          
-      
-//     ],//['Enviar'],
-//   });
-
-//   await alert.present();
-// }
 
 
 

@@ -21,7 +21,7 @@ import { ApiService } from '../service/api.service';
 export class FazerdenunciaPage {
 [x: string]: any;
 
-
+  
 
 
 
@@ -41,7 +41,7 @@ export class FazerdenunciaPage {
 
   
     ) {
-      this['getDenuncia']();
+     
      }
      getDenuncia(){
       this.api['getDenuncia']().subscribe((api: any) => {
@@ -69,107 +69,151 @@ export class FazerdenunciaPage {
     this.navCtrl.navigateForward('lista')
   }
 
+  // async presentAlertAdd() {
+  //   const alert = await this.alertController.create({
+  //     header: 'Fazer Denúncia',
+  //     inputs: [
+  //       {
+  //         name: 'rua',
+  //         type: 'text',
+  //         placeholder: 'Rua'
+  //       },
+  //       {
+  //         name: 'bairro',
+  //         type: 'text',
+  //         placeholder: 'Bairro',
+  //         attributes: {
+  //           maxlength: 20
+  //         }
+  //       },
+  //       {
+  //         name: 'numero',
+  //         type: 'number',
+  //         placeholder: 'Número',
+  //         min: 1,
+  //         max: 100
+  //       },
+  //       {
+  //         name: 'date',
+  //         type: 'date',
+  //         min: '2023-01-01',
+  //         max: '2024-12-30'
+  //       },
+  //       {
+  //         name: 'obs',
+  //         type: 'textarea',
+  //         placeholder: 'Observação'
+  //       }
+  //     ],
+  //     subHeader: 'Envio de Dados',
+  //     buttons: [
+  //       {
+  //         text: 'Cancelar',
+  //         role: 'cancel',
+  //         cssClass: 'secondary'
+  //       },
+  //       {
+  //         text: 'OK',
+  //         handler: (data) => {
+  //           this.api.postData(data).subscribe(response => {
+  //             console.log('Denúncia adicionada', response);
+  //             // Adicione qualquer lógica adicional após adicionar a denúncia
+  //           }, error => {
+  //             console.error('Erro ao adicionar denúncia', error);
+  //           });
+  //         }
+  //       }
+  //     ]
+  //   });
+
+  //   await alert.present();
+  // }
+
+  // async presentAlertEdit(id: string) {
+  //   const alert = await this.alertController.create({
+  //     header: 'Editar Denúncia',
+  //     inputs: [
+  //       {
+  //         name: 'rua',
+  //         type: 'text',
+  //         placeholder: 'Rua'
+  //       },
+  //       {
+  //         name: 'bairro',
+  //         type: 'text',
+  //         placeholder: 'Bairro',
+  //         attributes: {
+  //           maxlength: 20
+  //         }
+  //       },
+  //       {
+  //         name: 'numero',
+  //         type: 'number',
+  //         placeholder: 'Número',
+  //         min: 1,
+  //         max: 100
+  //       },
+  //       {
+  //         name: 'date',
+  //         type: 'date',
+  //         min: '2023-01-01',
+  //         max: '2024-12-30'
+  //       },
+  //       {
+  //         name: 'obs',
+  //         type: 'textarea',
+  //         placeholder: 'Observação'
+  //       }
+  //     ],
+  //     subHeader: 'Atualizar Dados',
+  //     buttons: [
+  //       {
+  //         text: 'Cancelar',
+  //         role: 'cancel',
+  //         cssClass: 'secondary'
+  //       },
+  //       {
+  //         text: 'OK',
+  //         handler: (data) => {
+  //           this.api['updateData'](id, data).subscribe((response: any) => {
+  //             console.log('Denúncia atualizada', response);
+  //             // Adicione qualquer lógica adicional após atualizar a denúncia
+  //           }, (error: any) => {
+  //             console.error('Erro ao atualizar denúncia', error);
+  //           });
+  //         }
+  //       }
+  //     ]
+  //   });
+
+  //   await alert.present();
+  // }
+
+  // deleteDenuncia(id: string) {
+  //   this.api.deleteData(id).subscribe((response: any) => {
+  //     console.log('Denúncia excluída', response);
+  //     // Adicione qualquer lógica adicional após excluir a denúncia
+  //   }, (error: any) => {
+  //     console.error('Erro ao excluir denúncia', error);
+  //   });
+  // }
 
 
 
 
   
   
-  async presentAlertAdd() {
-    const alert = await this.alertController.create({
-      header: 'Fazer Denúncia',
-      inputs: [
-        {
-          name: 'rua',
-          type: 'text',
-          placeholder: 'Rua'
-        },
-        {
-          name: 'bairro',
-          type: 'text',
-          placeholder: 'Bairro',
-          attributes: {
-            maxlength: 20
-          }
-        },
-        {
-          name: 'numero',
-          type: 'number',
-          placeholder: 'Número',
-          min: 1,
-          max: 100
-        },
-        {
-          name: 'date',
-          type: 'date',
-          min: '2023-01-01',
-          max: '2024-12-30'
-        },
-        {
-          name: 'obs',
-          type: 'textarea',
-          placeholder: 'Observação'
-        }
-      ],
-      subHeader: 'Envio de Dados',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary'
-        },
-        {
-          text: 'OK',
-          handler: (data) => {
-            if (
-              data.rua !== "" &&
-              data.bairro !== "" &&
-              data.numero !== "" &&
-              data.date !== "" &&
-              data.obs !== ""
-            ) {
-              const taskData = {
-                rua: data.rua,
-                address: data.bairro,
-                numero: data.numero,
-                date: data.date,
-                obs: data.obs,
-                done: false // Este campo pode ser opcional dependendo da sua API
-              };
-
-              this.taskService['postData'](taskData).subscribe(
-                (                response: any) => {
-                  console.log('Dados enviados com sucesso:', response);
-                  this.functioncNextLista(); // Chame sua função para prosseguir
-                },
-                (                error: any) => {
-                  console.error('Erro ao enviar os dados:', error);
-                  this['presentToastError'](); // Exibe um toast para o erro
-                }
-              );
-            } else {
-              this.presentToastVazio(); // Exibe um toast para campos vazios
-            }
-          }
-        }
-      ]
-    });
-
-    await alert.present();
-  }
-
-  
 
 
   
-    async presentToastVazio(){
-      const toast = await this.toastontroller.create({
-        message: "Preencha os Campos",
-        duration:3200,
+  //   async presentToastVazio(){
+  //     const toast = await this.toastontroller.create({
+  //       message: "Preencha os Campos",
+  //       duration:3200,
         
-      });
-      toast.present();
-    }
+  //     });
+  //     toast.present();
+  //   }
       
 
   async Campo_Vazio() {

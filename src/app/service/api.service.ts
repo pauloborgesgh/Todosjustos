@@ -8,7 +8,8 @@ import { Observable } from 'rxjs/internal/Observable';
 export class ApiService {
   [x: string]: any;
 
- public url:   String = 'http://localhost:3000/'
+ public url = 'http://localhost:3000/'
+  denuncias: any[] = [];
 
   constructor( public http: HttpClient,
     
@@ -16,15 +17,37 @@ export class ApiService {
    ){ }
    ngOnInit() {
     this.getData();
-   // this.postData();
+    //
   }
 
     getData(){
       return this.http.get(`${this.url}denuncias`)
     }
-
-    postData(taskData: any): Observable<any> {
-      return this['httpClient'].post(this.url, taskData);
+    
+    postData(denuncias: any): Observable<any> {
+      return this.http.post(`${this.url}denuncias`, denuncias);
     }
+  
+    putData(denuncia:any ): Observable<any> {
+      return this.http.put(`${this.url}denuncias/${denuncia}`,denuncia);
+    }
+  
+    deleteData(id: string): Observable<any> {
+      return this.http.delete(`${this.url}denuncias/${id}`);
+    }
+
+    
    
-}
+    updateData(id: string, data: any): Observable<any> {
+      return this.http.put(`${this.url}denuncias/${id}`, data);
+    }
+
+    
+
+    
+
+    
+  }
+
+    
+   

@@ -1,3 +1,4 @@
+import { ApiService } from './../service/api.service';
 import { TaskService } from './../task.service';
 import { FotoService } from './../foto.service';
 
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ListaPageModule } from '../lista/lista.module';
-// import { AuthenticationService } from '../shared/authentication.service';
+
 
 @Component({
   selector: 'app-menu',
@@ -19,7 +20,7 @@ import { ListaPageModule } from '../lista/lista.module';
 export class MenuPage implements OnInit {
   [x: string]: any;
   header:any;
-
+  emailAtual: string = '';
   
   // fotoPerfil = [
   //   {
@@ -36,6 +37,7 @@ export class MenuPage implements OnInit {
     public fotoservice:FotoService,
     public router:Router,
     public loadingCtrl: LoadingController,
+    public api:ApiService,
     public taskService:TaskService
     
   ) { 
@@ -44,6 +46,7 @@ export class MenuPage implements OnInit {
   }
 
   ngOnInit() {
+    // this.emailAtual = this['userService'].getEmailAtual(); 
   }
  
   functioDenuncia() {
@@ -128,77 +131,167 @@ export class MenuPage implements OnInit {
         loading.present();
         await new Promise(resolve => setTimeout(resolve, 1000)); 
       }
+
       async presentAlertAdd() {
-        const alert = await this['alertController'].create({
-          header: 'Fazer Denuncia',
-          inputs:[
+        const alert = await this.alertController.create({
+          header: 'Fazer Denúncia',
+          inputs: [
             {
               name: 'rua',
               type: 'text',
-              placeholder:'Rua'
-
+              placeholder: 'Rua'
             },
             {
-              name:'address',
+              name: 'bairro',
+              type: 'text',
               placeholder: 'Bairro',
               attributes: {
-                maxlength: 20,
-              },
+                maxlength: 20
+              }
             },
             {
-              name:'numero',
+              name: 'cidade',
+              type: 'text',
+              placeholder: 'Cidade',
+              attributes: {
+                maxlength: 20
+              }
+            },
+            {
+              name: 'numero',
               type: 'number',
-              placeholder: 'Numero',
-              min: 1,
-              max: 100,
+              placeholder: 'Número',
+            
             },
             {
-              name:'obs',
+              name: 'Dia',
+              type: 'date',
+              min: '2023-01-01',
+              max: '2024-12-30'
+            },
+            {
+              name: 'obs',
               type: 'textarea',
-              placeholder: 'Observação',
-            },
-            {
-              name:'date',
-              type:'date',
-              min: '2023-01-01', 
-              max:'2024-12-30'
-            },
+              placeholder: 'Observação'
+            }
           ],
           subHeader: 'Envio de Dados',
-          //message: 'This is an alert!',
-          buttons:[
-              {
-                text: 'cancelar',
-                role: 'cancel',
-                cssClass: 'secondary',
-    
-              },{
-                text:'OK',
-                
-                handler:async (alert: { task: string; rua: string; address: string; numero: string; obs: string; date: string; }) =>{
-                  
-                  if (alert.task !==" ")
-                  this.loadingAdd(),
-                  await new Promise(resolve => setTimeout(resolve, 3000)),
-                  
-                  this.taskService.denunciaIndex(alert.rua,alert.address,alert.numero,alert.obs,alert.date);
-                 
-                 
-                 else{
-                    // this.presentToast();
-                    this.presentAlertAdd();
-                 
-                  
-                 }
-                }
-    
+          buttons: [
+            {
+              text: 'Cancelar',
+              role: 'cancel',
+              cssClass: 'secondary'
+            },
+            {
+              text: 'OK',
+              handler: (denuncia) => {
+                this.api.postData(denuncia).subscribe(response => {
+                  console.log('Denúncia adicionada', response);
+                  // Adicione qualquer lógica adicional após adicionar a denúncia
+                }, error => {
+                  console.error('Erro ao adicionar denúncia', error);
+                });
               }
-    
-          ],//['Enviar'],
+            }
+          ]
         });
     
         await alert.present();
       }
+    
+      // async presentAlertEdit(id: string) {
+      //   const alert = await this.alertController.create({
+      //     header: 'Editar Denúncia',
+      //     inputs: [
+      //       {
+      //         name: 'rua',
+      //         type: 'text',
+      //         placeholder: 'Rua'
+      //       },
+      //       {
+      //         name: 'bairro',
+      //         type: 'text',
+      //         placeholder: 'Bairro',
+      //         attributes: {
+      //           maxlength: 20
+      //         }
+      //       },
+      //       {
+      //         name: 'cidade',
+      //         type: 'text',
+      //         placeholder: 'Cidade',
+      //         attributes: {
+      //           maxlength: 20
+      //         }
+      //       },
+      //       {
+      //         name: 'numero',
+      //         type: 'number',
+      //         placeholder: 'Número',
+      //         min: 1,
+      //         max: 100
+      //       },
+      //       {
+      //         name: 'date',
+      //         type: 'date',
+      //         min: '2023-01-01',
+      //         max: '2024-12-30'
+      //       },
+      //       {
+      //         name: 'obs',
+      //         type: 'textarea',
+      //         placeholder: 'Observação'
+      //       }
+      //     ],
+      //     subHeader: 'Atualizar Dados',
+      //     buttons: [
+      //       {
+      //         text: 'Cancelar',
+      //         role: 'cancel',
+      //         cssClass: 'secondary'
+      //       },
+      //       {
+      //         text: 'OK',
+      //         handler: (data) => {
+      //           this.api['updateData'](id, data).subscribe((response: any) => {
+      //             console.log('Denúncia atualizada', response);
+      //             // Adicione qualquer lógica adicional após atualizar a denúncia
+      //           }, (error: any) => {
+      //             console.error('Erro ao atualizar denúncia', error);
+      //           });
+      //         }
+      //       }
+      //     ]
+      //   });
+    
+      //   await alert.present();
+      // }
+    
+      deleteDenuncia(id: string) {
+        this.api.deleteData(id).subscribe((response: any) => {
+          console.log('Denúncia excluída', response);
+          // Adicione qualquer lógica adicional após excluir a denúncia
+        }, (error: any) => {
+          console.error('Erro ao excluir denúncia', error);
+        });
+      }
+    
+    
+    
+    
+      
+      
+    
+    
+      
+        async presentToastVazio(){
+          const toast = await this.toastontroller.create({
+            message: "Preencha os Campos",
+            duration:3200,
+            
+          });
+          toast.present();
+        }
     
     
     

@@ -16,6 +16,7 @@ import { LoadingController } from '@ionic/angular';
 export class HomePage {
  [ x: string]: any;
  public mostrarSenha: boolean = false;
+ userNameValue: string = '';
   constructor(
     public alertController: AlertController,
     public navCtrl: NavController,
@@ -46,6 +47,7 @@ export class HomePage {
       this.mostrarSenha = !this.mostrarSenha;
     }
     
+    
   function_Cadastro(){
     this.navCtrl.navigateForward('cadastrouser')
   }
@@ -54,11 +56,11 @@ export class HomePage {
   }
   
 
-  login_accept(userName: string, userPassword: string): void {
+  login_accept(useremail: string, userPassword: string): void {
     'await'; new Promise(resolve => setTimeout(resolve, 2000));
-    const users = this.userService.getUsers();
-    const user = users.find((u: User) => u.email == userName && u.senha == userPassword);
-    
+    const users = this.userService['getUsers']();
+    const user = users.find((u: User) => u.email == useremail && u.senha == userPassword);
+    this.userNameValue = useremail;
     if (user) {
       
       this.functionMenu();
@@ -89,7 +91,7 @@ export class HomePage {
   }
   async showLoading() {
     const loading = await this['loadingCtrl'].create({
-      message: 'Conectando..',
+      message: 'Logando..',
       duration: 1000,
       
     });

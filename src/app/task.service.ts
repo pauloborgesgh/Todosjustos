@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Camera, CameraResultType } from '@capacitor/camera';
-import { LoadingController } from '@ionic/angular/providers/loading-controller';
+
 import { HttpClient } from '@angular/common/http';
-import { ApiService } from './service/api.service';
+
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
   [x: string]: any;
-  // public apiUrl = 'http://localhost:3000/api/denuncias';
+  
   public tasks : Task[] = [];
   
   public collectionName : string = 'Task';
