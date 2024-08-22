@@ -1,9 +1,11 @@
+import { ApiService } from './../service/api.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, NavController } from '@ionic/angular';
 
 import { User, UserService } from '../user.service';
 import { LoadingController } from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -17,31 +19,22 @@ export class HomePage {
  [ x: string]: any;
  public mostrarSenha: boolean = false;
  userNameValue: string = '';
+ userName: string | undefined;
+ userId : string ='';
   constructor(
     public alertController: AlertController,
     public navCtrl: NavController,
     public router: Router,
     public userService: UserService,
     public loadingCtrl: LoadingController,
-
+    public api: ApiService,
+    public http: HttpClient
     
  
     ) {
-    // this.authenticationService.logged().subscribe(
-    //   (      data: null) =>{
-    //     if (data != null) this.router.navigate(['menu'])
-    //   },
-    //   (      erro: any) => console.log(erro)
-    // ) 
-    // this['getData']();
-  
+    
     }
 
-    // getData(){
-    //   this.api.getData().subscribe(api => {
-    //     console.log(api);
-        
-    //   })};
     
     public alternarVisibilidadeSenha(): void {
       this.mostrarSenha = !this.mostrarSenha;
@@ -56,18 +49,63 @@ export class HomePage {
   }
   
 
-  login_accept(useremail: string, userPassword: string): void {
-    'await'; new Promise(resolve => setTimeout(resolve, 2000));
-    const users = this.userService['getUsers']();
-    const user = users.find((u: User) => u.email == useremail && u.senha == userPassword);
-    this.userNameValue = useremail;
-    if (user) {
-      
-      this.functionMenu();
-    } else {
+  
+
+  async login_accept(name: string, password: string) {
+    // Simula uma espera de 2 segundos
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Exibe o carregamento
+    this.Loading();
+  
+    try {
+      // Faz a solicitação à API para autenticar o usuário com email e senha fornecidos
+      const response = await fetch(`http://localhost:3000/user/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, password }), // Envia nome e senha no corpo da requisição
+      });
+  
+      if (!response.ok) {
+        throw new Error('Erro ao buscar usuário');
+      }
+  
+      const user = await response.json();
+      if (user) {
+        // Alerta de login bem-sucedido
+        this.LoginAlerta();
+        
+        localStorage.setItem('userId', user.id);
+        localStorage.setItem('username', user.name);
+       
+        
+        // Executa a função para configurar o menu
+        this.functionMenu();
+      } else {
+        // Exibe alerta se o usuário não for encontrado
+        this.exibirAlerta();
+      }
+    } catch (error) {
+      console.error('Erro ao verificar login:', error);
       this.exibirAlerta();
     }
   }
+  
+async Loading() {
+  const loading = await this.loadingCtrl.create({
+    message: 'Aguarde..',
+    duration: 1000,  
+  });
+  loading.present();
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
+  
+}
+
+
+
   async exibirAlerta() {
     const alert = await this['alertController'].create({
       header: 'Usuario ou senha incorretos ',
@@ -92,7 +130,7 @@ export class HomePage {
   async showLoading() {
     const loading = await this['loadingCtrl'].create({
       message: 'Logando..',
-      duration: 1000,
+      duration: 1200,
       
     });
     
@@ -103,18 +141,6 @@ export class HomePage {
   }
   
 
-  // async showSair() {
-  //   const loading = await this['loadingCtrl'].create({
-  //     message: 'Saindo..',
-  //     duration: 1000,
-      
-  //   }
-   
-  //   );
-  //   this.functionhome()
-  //   loading.present();
-  // }
-  
 
   
 

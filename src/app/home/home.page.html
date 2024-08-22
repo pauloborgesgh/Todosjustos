@@ -20,7 +20,7 @@
           <input
             type="text"
             class="formControl"
-            placeholder="UserEmail"
+            placeholder="Campo do usuario"
             #userName
             required
             label-placement="floating" fill="outline"
@@ -29,15 +29,14 @@
         <br><br>
         
         <input
-
         name="password"
         id="password"
         [type]="mostrarSenha ? 'text' : 'password'"
         class="formControl"
         placeholder="Password"
-        value="userPassword"
         #userPassword
-        required/> 
+        required
+        />
         </div>
       </div>
       
@@ -46,7 +45,7 @@
   <br>
   <ion-icon name="eye-off-outline" (click)="alternarVisibilidadeSenha()" class="icon"></ion-icon>
   <br> <br>
-  <!-- <ion-button color="danger" style="height: 2%; width: 220px;">Fazer Login Com Google</ion-button> -->
+  
   <ion-button
   type="button"
   class="button"

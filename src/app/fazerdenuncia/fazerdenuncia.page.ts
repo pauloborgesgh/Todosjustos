@@ -20,7 +20,8 @@ import { ApiService } from '../service/api.service';
 })
 export class FazerdenunciaPage {
 [x: string]: any;
-
+username: string | null = ''; 
+userid:string | null = '';
   
 
 
@@ -49,6 +50,18 @@ export class FazerdenunciaPage {
         
       })
      }
+
+     ngOnInit() {
+      // Pegando o username do localStorage
+      this.username = localStorage.getItem('username');
+      this.userid = localStorage.getItem('userId');
+      if (this.username) {
+        console.log('Username:', this.username);
+        console.log('userId :', this.userid);
+      } else {
+        console.log('Nenhum username encontrado no localStorage.');
+      }
+    }
     //  postData() {
       
     //   this.api.postData().subscribe(response => {

@@ -24,14 +24,16 @@
         <p>Bairro : {{denuncia.bairro}}</p>
         <p>Cidade : {{denuncia.cidade}}</p>
         <p>Numero : {{denuncia.numero}}</p>
-        <p>Data : {{denuncia.Dia}}</p>
+        <p>Data: {{ denuncia.Dia | date:'dd/MM/yyyy' }}</p>
+
+        
         <p>Observação : {{denuncia.obs}}</p>
         
         <ion-item style="border-radius: 10px;background-color: none; border: 1px solid;" >
 
-          <ion-button (click)="CadastroDenuncia()" >Cadastrar</ion-button>
-          <ion-button class="button" color="secondary" (click)="EditaDenuncia(denuncia)">Editar</ion-button>
-          <ion-button class="button" color="danger"  (click)="DeleteDenuncia(denuncia.id)">Excluir</ion-button>
+          <!-- <ion-button (click)="CadastroDenuncia()" >Cadastrar</ion-button> -->
+          <ion-button class="button" color="secondary" *ngIf="['userHasDenuncias']"  (click)="EditaDenuncia(denuncia)">Editar</ion-button>
+          <ion-button class="button" color="danger"  (click)="deleteDenuncia(denuncia.id)">Excluir</ion-button>
     
         </ion-item>
         <br>
@@ -39,7 +41,7 @@
       </ion-card-content>
     </ion-card>
     
-    
+  
 
   <br><br>
 </ion-content >

@@ -32,9 +32,9 @@ export class ApiService {
       return this.http.put(`${this.url}denuncias/${denuncia}`,denuncia);
     }
   
-    deleteData(id: string): Observable<any> {
-      return this.http.delete(`${this.url}denuncias/${id}`);
-    }
+    // deleteData(id: string): Observable<any> {
+    //   return this.http.delete(`${this.url}denuncias/${id}`);
+    // }
 
     
    
@@ -42,8 +42,33 @@ export class ApiService {
       return this.http.put(`${this.url}denuncias/${id}`, data);
     }
 
+    //cadastro usuario
+    postUser(user: any): Observable<any> {
+      return this.http.post(`${this.url}user`, user);
+    }
+
+    getUser(){
+      return this.http.get(`${this.url}user`)
+    }
+    deleteData(id: string, data: { created_by: string }): Observable<any> {
+      return this.http.delete(`/denuncias/${id}`, {
+        body: data // Passando o `created_by` no corpo da requisição
+      });
+    }
     
 
+    // getDenuncias(): Observable<any> {
+    //   return this.http.get('/denuncias');
+    // }
+  
+    // deleteDenuncia(id: string, created_by: string): Observable<any> {
+    //   return this.http.delete(`/denuncias/${id}`, { body: { created_by } });
+    // }
+  
+    // updateDenuncia(id: string, data: any): Observable<any> {
+    //   return this.http.put(`/denuncias/${id}`, data);
+    // }
+    
     
 
     

@@ -1,7 +1,9 @@
+import { User } from './../user.service';
 import { Component, OnInit } from '@angular/core';
-
+import { ApiService } from '../service/api.service';
 import { UserService } from '../user.service';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -27,12 +29,15 @@ export class CadastrouserPage implements OnInit {
     public alertController: AlertController,
     public userService:UserService,
     public toastontroller:ToastController,
-    // public firestore :AngularFirestore,
-    // public db:SqliteService,
+    public api:ApiService,
+    public http: HttpClient,
+    
 
  
     
     ) { }
+
+    
 
   ngOnInit() {
     this.presentAlertAdd();
@@ -45,7 +50,7 @@ export class CadastrouserPage implements OnInit {
       header: 'Cadasto Usuario',
       inputs:[
         {
-          name: 'nome',
+          name: 'name',
           type: 'text',
           placeholder:'Nome'
 
@@ -61,22 +66,23 @@ export class CadastrouserPage implements OnInit {
           type: 'number',
           placeholder: 'cpf',
           attributes:{ 
-            max: 11,
+            min:11,
+            max: 11
           }
       
         },
         {
-          name:'senha',
+          name:'password',
           type: 'password',
           placeholder: 'Senha',
           min: 6,
           max: 10,
         },
-        {
-          name:'repetir_senha',
-          type: 'password',
-          placeholder: 'Repitir senha',
-         },
+        // {
+        //   name:'repetir_senha',
+        //   type: 'password',
+        //   placeholder: 'Repitir senha',
+        //  },
       ],
       subHeader: 'Envio de Dados',
       //message: 'This is an alert!',
@@ -88,36 +94,18 @@ export class CadastrouserPage implements OnInit {
             
           },{
             text:'OK',
-            
-            handler:(alert:any) =>{
-
-              
-            if (alert.name != '',alert.user != '' ,alert.email != '' ,alert.cpf!='',alert.senha != '' ,alert.repetir_senha !=''){
-            
-            this.userService.addUsuario(
-            alert.nome,
-            alert.email,
-            alert.cpf,
-            alert.senha,
-            alert.repetir_senha),
-            this.LoginAlerta();
-            this.function_Voltar();
-            console.log();
-           
-            }
-          
-            else{
-              
-              //this.presentAlertAdd();
-              this.Campo_Vazio();
-             }  
-             
-            
-            
-
+            handler: (user) => {
+              this.api.postUser(user).subscribe((response: any) => {
+              console.log('Cadastro Criado com sucesso ', response);
+              this.function_Voltar();
+                
+              }, (error: any) => {
+                console.error('Erro ao criar Cadastro', error);
+              });
             }
 
           }
+          
 
       ],//['Enviar'],
     });
@@ -145,10 +133,7 @@ export class CadastrouserPage implements OnInit {
       });
       toast.present();
     }
-    // public addFireBasee(record : Form){
-    //   return this.firestore.collection(this.collectionName).add(record)
-  
-    // }
+   
     async LoginAlerta() {
       
       const alert = await this['alertController'].create({
