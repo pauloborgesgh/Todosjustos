@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class UserService {
 [x: string]: any;
-
+ username = localStorage.getItem('username');
 
   
   public userProfileSubject = new BehaviorSubject<any>({});
@@ -31,7 +31,9 @@ export class UserService {
   public users: User[] = [];
   
   public cacheKey = 'UserCache';
-
+  
+  created_by = localStorage.getItem('userId');
+  
   constructor(
     public alertController: AlertController,
     public navCtrl : NavController,

@@ -14,6 +14,7 @@ export class ConfiguracaoPage implements OnInit {
   
 [x: string]: any;
 
+username = localStorage.getItem('username');
 userData = {
   email: '',
   cpf: '',

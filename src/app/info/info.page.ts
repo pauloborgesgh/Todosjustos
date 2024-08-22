@@ -10,7 +10,7 @@ export class InfoPage implements OnInit {
 
   
   
-
+  username = localStorage.getItem('username');
   constructor(
     public navCtrl : NavController,
     public fotoService:FotoService,

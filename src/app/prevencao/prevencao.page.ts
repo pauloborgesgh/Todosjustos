@@ -8,10 +8,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./prevencao.page.scss'],
 })
 export class PrevencaoPage implements OnInit {
-
+  username = localStorage.getItem('username');
   constructor(
     public FotoService:FotoService,
     public navCtrl :NavController,
+    
   ) { }
 
   ngOnInit() {
