@@ -359,70 +359,136 @@ async EditaDenuncia(denuncia: any) {
 
 
   
-  async deleteDenuncia(id: string) {
-    const IdUsuarioCriado = localStorage.getItem('userId'); // Obtém o ID do usuário logado do localStorage
+//   async deleteDenuncia(id: string) {
+//     const IdUsuarioCriado = localStorage.getItem('userId'); // Obtém o ID do usuário logado do localStorage
 
-    if (!IdUsuarioCriado) {
-      // Se o usuário não está autenticado
-      const alert = await this.alertController.create({
-        header: 'Erro!',
-        message: 'Usuário não autenticado.',
-        buttons: ['OK']
-      });
-      await alert.present();
-      return;
-    }
+//     if (!IdUsuarioCriado) {
+//       // Se o usuário não está autenticado
+//       const alert = await this.alertController.create({
+//         header: 'Erro!',
+//         message: 'Usuário não autenticado.',
+//         buttons: ['OK']
+//       });
+//       await alert.present();
+//       return;
+//     }
 
-    const alert = await this.alertController.create({
-      header: 'Tem certeza?',
+//     const alert = await this.alertController.create({
+//       header: 'Tem certeza?',
+//       message: 'Você realmente deseja deletar esta denúncia?',
+//       buttons: [
+//         {
+//           text: 'Cancelar',
+//           role: 'cancel',
+//           cssClass: 'secondary'
+//         },
+//         {
+//           text: 'Sim, deletar',
+//           handler: async () => {
+//             try {
+//               const response: any = await this.api.deleteData(id, { created_by: IdUsuarioCriado }).toPromise();
+//               console.log(id);
+//               console.log(this.created_by);
+//               console.log(IdUsuarioCriado);
+//               if (response && response.message === 'Denúncia removida com sucesso!') {
+//                 const successAlert = await this.alertController.create({
+//                   header: 'Sucesso!',
+//                   message: 'Denúncia deletada com sucesso.',
+//                   buttons: ['OK']
+//                 });
+//                 await successAlert.present();
+//                 this.getData(); // Atualiza a lista após a exclusão
+//               } else if (response && response.message === 'Você não tem permissão para deletar esta denúncia.') {
+//                 const permissionAlert = await this.alertController.create({
+//                   header: 'Erro!',
+//                   message: 'Você não tem permissão para deletar esta denúncia.',
+//                   buttons: ['OK']
+//                 });
+//                 await permissionAlert.present();
+//               }
+//             } catch (error) {
+//               const errorAlert = await this.alertController.create({
+//                 header: 'Erro!',
+//                 message: 'Ocorreu um erro ao deletar a denúncia.',
+//                 buttons: ['OK']
+//               });
+//               await errorAlert.present();
+//             }
+//           }
+//         }
+//       ]
+//     });
+
+//     await alert.present();
+// }
+
+async presentAlertDelete(id: string) {
+  // Primeiro, obtenha o ID do usuário logado
+  const IdUsuarioCriado = localStorage.getItem('userId'); // ID do usuário logado
+
+  // Exibe um alerta de confirmação antes de deletar
+  const alert = await this.alertController.create({
+      header: 'Deletar Denúncia',
+      subHeader: 'Confirmação de Exclusão',
       message: 'Você realmente deseja deletar esta denúncia?',
       buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary'
-        },
-        {
-          text: 'Sim, deletar',
-          handler: async () => {
-            try {
-              const response: any = await this.api.deleteData(id, { created_by: IdUsuarioCriado }).toPromise();
-              console.log(id);
-              console.log(this.created_by);
-              console.log(IdUsuarioCriado);
-              if (response && response.message === 'Denúncia removida com sucesso!') {
-                const successAlert = await this.alertController.create({
-                  header: 'Sucesso!',
-                  message: 'Denúncia deletada com sucesso.',
-                  buttons: ['OK']
-                });
-                await successAlert.present();
-                this.getData(); // Atualiza a lista após a exclusão
-              } else if (response && response.message === 'Você não tem permissão para deletar esta denúncia.') {
-                const permissionAlert = await this.alertController.create({
-                  header: 'Erro!',
-                  message: 'Você não tem permissão para deletar esta denúncia.',
-                  buttons: ['OK']
-                });
-                await permissionAlert.present();
-              }
-            } catch (error) {
-              const errorAlert = await this.alertController.create({
-                header: 'Erro!',
-                message: 'Ocorreu um erro ao deletar a denúncia.',
-                buttons: ['OK']
-              });
-              await errorAlert.present();
-            }
-          }
-        }
-      ]
-    });
+          {
+              text: 'Cancelar',
+              role: 'cancel',
+              cssClass: 'secondary',
+          },
+          {
+              text: 'Deletar',
+              handler: async () => {
+                  try {
+                      // Verifica se o usuário está autenticado e se ele é o criador da denúncia
+                      if (!IdUsuarioCriado) {
+                          console.error('Erro: usuário não autenticado.');
+                          return;
+                      }
 
-    await alert.present();
+                      // Chama a API para deletar a denúncia
+                      const response = await this.api.deleteData(id, { created_by: IdUsuarioCriado }).toPromise();
+
+                      if (response && response.status === 200) {
+                          console.log('Denúncia deletada com sucesso', response);
+                          this.getData(); // Atualiza a lista de denúncias após a exclusão
+
+                          // Exibe alerta de sucesso
+                          const successAlert = await this.alertController.create({
+                              header: 'Sucesso',
+                              message: 'Denúncia deletada com sucesso!',
+                              buttons: ['OK'],
+                          });
+                          await successAlert.present();
+                      } else {
+                          // Exibe alerta de erro caso a denúncia não tenha sido deletada
+                          const errorAlert = await this.alertController.create({
+                              header: 'Erro!',
+                              message: 'Não foi possível deletar a denúncia.',
+                              buttons: ['OK'],
+                          });
+                          await errorAlert.present();
+                      }
+                  } catch (error) {
+                      console.error('Erro ao deletar denúncia', error);
+
+                      // Exibe alerta em caso de erro
+                      const errorAlert = await this.alertController.create({
+                          header: 'Erro!',
+                          message: 'Ocorreu um erro ao deletar a denúncia.',
+                          buttons: ['OK'],
+                      });
+                      await errorAlert.present();
+                  }
+              },
+          },
+      ],
+  });
+
+  await alert.present();
 }
 
-  
   
   
   
