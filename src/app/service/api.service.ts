@@ -8,8 +8,8 @@ import { Observable } from 'rxjs/internal/Observable';
 export class ApiService {
   [x: string]: any;
 
- public url = 'http://localhost:3000/'
-  
+ public url = 'https://app-api-prd.up.railway.app'
+              
 
   constructor( public http: HttpClient,
     
@@ -17,7 +17,7 @@ export class ApiService {
    ){ }
    // eslint-disable-next-line @angular-eslint/contextual-lifecycle
    ngOnInit() {
-    this.getData();
+  this.getData();
     //
   }
 
@@ -26,7 +26,7 @@ export class ApiService {
     }
     
     postData(denuncias: any): Observable<any> {
-      return this.http.post(`${this.url}denuncias`, denuncias);
+      return this.http.post(`${this.url}/denuncias`, denuncias);
     }
   
     // putData(denuncia:any ): Observable<any> {
@@ -37,25 +37,25 @@ export class ApiService {
     
 
     putData(id: string, data: any): Observable<any> {
-      return this.http.put(`${this.url}denuncias/edit/${id}`, data);
+      return this.http.put(`${this.url}/denuncias/edit/${id}`, data);
     }
 
     //cadastro usuario
     postUser(user: any): Observable<any> {
-      return this.http.post(`${this.url}user`, user);
+      return this.http.post(`${this.url}/user`, user);
     }
 
     getUser(){
       return this.http.get(`${this.url}user`)
     }
     deleteeData(id: string, data: { created_by: string }): Observable<any> {
-      return this.http.delete(`http://localhost:3000/denuncias/remove/${id}`, {
-        body: data // Passando o `created_by` no corpo da requisição
+      return this.http.delete(`https://app-api-prd.up.railway.app/denuncias/remove/${id}`, {
+        body: data 
       });
     }
   
     editDenuncia(id: string, data: any): Observable<any> {
-      return this.http.put(`http://localhost:3000/denuncias/edit/${id}`, data);
+      return this.http.put(`https://app-api-prd.up.railway.app/denuncias/edit/${id}`, data);
     }
     
     

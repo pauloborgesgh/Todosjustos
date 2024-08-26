@@ -66,7 +66,7 @@ export class CadastrouserPage implements OnInit {
           type: 'number',
           placeholder: 'cpf',
           attributes:{ 
-            min:11,
+           
             max: 11
           }
       

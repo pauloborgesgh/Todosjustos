@@ -60,7 +60,7 @@ export class HomePage {
   
     try {
       // Faz a solicitação à API para autenticar o usuário com email e senha fornecidos
-      const response = await fetch(`http://localhost:3000/user/login`, {
+      const response = await fetch(`https://app-api-prd.up.railway.app/user/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

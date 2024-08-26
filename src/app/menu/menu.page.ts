@@ -209,17 +209,6 @@ export class MenuPage implements OnInit {
 }
 
 
-  // deleteDenuncia(id: string) {
-  //   this.api.deleteData(id).subscribe(
-  //     (response: any) => {
-  //       console.log('Denúncia excluída', response);
-  //       // Adicione qualquer lógica adicional após excluir a denúncia
-  //     },
-  //     (error: any) => {
-  //       console.error('Erro ao excluir denúncia', error);
-  //     }
-  //   );
-  // }
 
   async presentToastVazio() {
     const toast = await this.toastontroller.create({

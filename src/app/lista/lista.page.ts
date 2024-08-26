@@ -20,9 +20,10 @@ defineCustomElements(window);
 })
 export class ListaPage  {
 [x: string]: any;
-userNameValue: string = '';
+
 created_by : string | null ='';
- 
+username = localStorage.getItem('username');
+
  
   data: any[] = [];
   denuncias: any[] = [];
@@ -40,11 +41,11 @@ created_by : string | null ='';
      
      ) {
        this.getData();
-      //  this.username = localStorage.getItem('username');
+      
   }
   
   getData(queryParams?: any) {
-    let url = 'http://localhost:3000/denuncias';
+    let url = 'https://app-api-prd.up.railway.app/denuncias';
 
     if (queryParams) {
         const queryStrings = Object.keys(queryParams)
@@ -200,7 +201,7 @@ async deleteDenuncia(id: string) {
             }
 
             // Chama a API para deletar a denúncia
-            const response = await this.api.deleteeData(`/${id}`, { created_by: IdUsuarioCriado }).toPromise();
+            const response = await this.api.deleteeData(`${id}`, { created_by: IdUsuarioCriado }).toPromise();
 
             if (response && response.message === 'Denúncia removida com sucesso!') {
               console.log('Denúncia deletada com sucesso', response);
@@ -326,9 +327,11 @@ async EditaDenuncia(denuncia: any) {
 
             // Chama a API para atualizar a denúncia
             this.api.editDenuncia(denuncia.id, updatedDenuncia).subscribe(
+              
               (response) => {
                 console.log('Denúncia atualizada com sucesso', response);
                 this.getData();
+                this.loadingAtualizando();
                 // Adicione qualquer lógica adicional após a atualização
               },
               (error) => {
@@ -404,7 +407,7 @@ async EditaDenuncia(denuncia: any) {
 
   async loadingAtualizando() {
     const loading = await this.loadingCtrl.create({
-      message: 'Atualizando ...',
+      message: 'Atualizando Dados ...',
       duration: 3200,
     });
 
